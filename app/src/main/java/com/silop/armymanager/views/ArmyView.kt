@@ -26,11 +26,11 @@ fun ArmyScreen(
     val armyState by armyViewModel.armyState.collectAsState()
 
     // A unit of skitarii rangers
-    val m1 = Miniature("Ranger Alpha")
-    val m2 = Miniature("Skitarii Ranger")
-    val m3 = Miniature("Skitarii Ranger")
-    val m4 = Miniature("Skitarii Ranger")
-    val m5 = Miniature("Skitarii Ranger")
+    val m1 = Miniature("Ranger Alpha", 8)
+    val m2 = Miniature("Skitarii Ranger", 8)
+    val m3 = Miniature("Skitarii Ranger", 8)
+    val m4 = Miniature("Skitarii Ranger", 8)
+    val m5 = Miniature("Skitarii Ranger", 8)
 
     val u1 = Unit("Skitarii Rangers")
     u1.miniatures.add(m1)
@@ -40,16 +40,16 @@ fun ArmyScreen(
     u1.miniatures.add(m5)
 
     for (m in u1.miniatures) {
-        m.equippedWeapons.add(Weapon("Galvanic Rifle"))
+        m.equippedWeapons.add(Weapon("Galvanic Rifle", 0))
     }
 
     armyState.units.add(u1)
 
     // A character
-    val c1 = Miniature("Tech-Priest Enginseer")
-    c1.equippedWeapons.add(Weapon("Laspistol"))
-    c1.equippedWeapons.add(Weapon("Omnissian axe"))
-    c1.equippedWeapons.add(Weapon("Servo-arm"))
+    val c1 = Miniature("Tech-Priest Enginseer", 35)
+    c1.equippedWeapons.add(Weapon("Laspistol", 0))
+    c1.equippedWeapons.add(Weapon("Omnissian axe", 0))
+    c1.equippedWeapons.add(Weapon("Servo-arm", 0))
 
     armyState.characters.add(c1)
 
@@ -81,7 +81,7 @@ fun ArmyLayout(army: Army) {
         )
 
         for (character in army.characters) {
-            MiniatureLayout(miniature = character, 1)
+            MiniatureLayout(miniature = character, 1, character.points)
         }
 
         for (unit in army.units) {
@@ -109,16 +109,30 @@ fun UnitLayout(unit: Unit) {
             Spacer(Modifier.width(30.dp))
 
             Text("Name")
+
+            Spacer(Modifier.width(30.dp))
+            
+            Text(text = "Weapons")
+
+            Spacer(Modifier.width(30.dp))
+            
+            Text(text = "Points")
         }
 
-        for (mini in unit.miniatures) {
-            MiniatureLayout(miniature = mini, unit.miniatures.count { mini.name == it.name })
+        val groups = unit.miniatures.groupBy { Pair(it.name, it.equippedWeapons) }
+
+        for (group in groups.values) {
+            MiniatureLayout(
+                miniature = group.first(),
+                amount = group.size,
+                points = group.sumOf { it.points }
+            )
         }
     }
 }
 
 @Composable
-fun MiniatureLayout(miniature: Miniature, amount: Int) {
+fun MiniatureLayout(miniature: Miniature, amount: Int, points: Int) {
     Row {
         Text(
             text = amount.toString(),
@@ -140,11 +154,19 @@ fun MiniatureLayout(miniature: Miniature, amount: Int) {
             for (weapon in miniature.equippedWeapons) {
                 Text(
                     text = weapon.name,
+                    style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
 
+        Spacer(Modifier.width(30.dp))
+
+        Text(
+            text = points.toString(),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
 }
 
