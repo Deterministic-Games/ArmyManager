@@ -18,13 +18,20 @@ import androidx.core.view.ViewCompat
 private val DarkColorScheme = darkColorScheme(
     background = nord0,
     onBackground = nord6,
+
     surface = nord1,
     onSurface = nord6,
+    surfaceVariant = nord2,
+    onSurfaceVariant = nord4,
 
     primary = nord8,
     onPrimary = nord6,
+    primaryContainer = nord3,
+    onPrimaryContainer = nord4,
+
     secondary = nord9,
     onSecondary = nord6,
+
     tertiary = nord10,
     onTertiary = nord6,
 
@@ -40,6 +47,8 @@ private val LightColorScheme = lightColorScheme(
     onBackground = nord6,
     surface = nord1,
     onSurface = nord6,
+    primaryContainer = nord2,
+    onPrimaryContainer = nord4,
 
     primary = nord8,
     onPrimary = nord6,
@@ -58,15 +67,9 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun ArmyManagerTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
