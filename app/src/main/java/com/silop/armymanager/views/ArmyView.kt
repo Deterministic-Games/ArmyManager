@@ -1,7 +1,6 @@
 package com.silop.armymanager.views
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -12,65 +11,31 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.silop.armymanager.viewmodels.ArmyViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.silop.armymanager.models.Army
-import com.silop.armymanager.models.Unit
 import com.silop.armymanager.models.Miniature
-import com.silop.armymanager.models.Weapon
-
 
 @Composable
 fun ArmyScreen(
     armyViewModel: ArmyViewModel = viewModel()
 ) {
-    val armyState by armyViewModel.armyState.collectAsState()
-
-    // A unit of skitarii rangers
-    val m1 = Miniature("Ranger Alpha", 8)
-    val m2 = Miniature("Skitarii Ranger", 8)
-    val m3 = Miniature("Skitarii Ranger", 8)
-    val m4 = Miniature("Skitarii Ranger", 8)
-    val m5 = Miniature("Skitarii Ranger", 8)
-
-    val u1 = Unit("Skitarii Rangers")
-    u1.miniatures.add(m1)
-    u1.miniatures.add(m2)
-    u1.miniatures.add(m3)
-    u1.miniatures.add(m4)
-    u1.miniatures.add(m5)
-
-    for (m in u1.miniatures) {
-        m.equippedWeapons.add(Weapon("Galvanic Rifle", 0))
-    }
-
-    armyState.units.add(u1)
-    armyState.units.add(u1)
-
-    // A character
-    val c1 = Miniature("Tech-Priest Enginseer", 35)
-    c1.equippedWeapons.add(Weapon("Laspistol", 0))
-    c1.equippedWeapons.add(Weapon("Omnissian axe", 0))
-    c1.equippedWeapons.add(Weapon("Servo-arm", 0))
-
-    armyState.characters.miniatures.add(c1)
+    val minis by armyViewModel.minis.collectAsState(emptyList())
 
     // Name
-    armyState.name = "Admech army"
+    val name = "Admech army"
 
     Surface(
         modifier = Modifier
             .fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        ArmyLayout(army = armyState)
+        ArmyLayout(name = name, minis)
     }
 }
 
 @Composable
-fun ArmyLayout(army: Army) {
+fun ArmyLayout(name: String, minis: List<Miniature>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -78,20 +43,18 @@ fun ArmyLayout(army: Army) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = army.name,
+            text = name,
             style = MaterialTheme.typography.titleLarge
         )
 
-        UnitLayout(unit = army.characters)
-
-        for (unit in army.units) {
-            UnitLayout(unit = unit)
+        minis.groupBy { it.unitName }.forEach { (unitName, miniatures) ->
+            UnitLayout(name = unitName, minis = miniatures)
         }
     }
 }
 
 @Composable
-fun UnitLayout(unit: Unit) {
+fun UnitLayout(name: String, minis: List<Miniature>) {
     Column(
         modifier = Modifier
             .clip(shape = MaterialTheme.shapes.small)
@@ -100,7 +63,7 @@ fun UnitLayout(unit: Unit) {
     ) {
         Text(
             modifier = Modifier.padding(5.dp),
-            text = unit.name,
+            text = name,
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -134,7 +97,7 @@ fun UnitLayout(unit: Unit) {
             )
         }
 
-        val groups = unit.miniatures.groupBy { Pair(it.name, it.equippedWeapons) }
+        val groups = minis.groupBy { Pair(it.name, it.equippedWeapons) }
 
         for (group in groups.values) {
             MiniatureLayout(
