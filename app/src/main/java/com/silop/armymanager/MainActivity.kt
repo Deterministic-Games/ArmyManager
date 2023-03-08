@@ -4,14 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.tooling.preview.Preview
 import com.silop.armymanager.database.ArmyDao
 import com.silop.armymanager.database.ArmyDatabase
+import com.silop.armymanager.models.Miniature
 import com.silop.armymanager.ui.theme.ArmyManagerTheme
 import com.silop.armymanager.viewmodels.ArmyViewModel
-import com.silop.armymanager.views.ArmyScreen
+import com.silop.armymanager.views.Navigation
 
 lateinit var dao: ArmyDao
 
@@ -32,17 +31,7 @@ class MainActivity : ComponentActivity() {
                     e.printStackTrace()
                 }
             }
-            ArmyManagerTheme {
-                ArmyScreen()
-            }
+            Navigation(viewModel = armyViewModel)
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ArmyManagerTheme {
-        ArmyScreen()
     }
 }
