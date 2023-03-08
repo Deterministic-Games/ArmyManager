@@ -19,21 +19,19 @@ private val DarkColorScheme = darkColorScheme(
     background = nord0,
     onBackground = nord6,
 
-    surface = nord1,
-    onSurface = nord6,
-    surfaceVariant = nord2,
-    onSurfaceVariant = nord4,
-
     primary = nord8,
     onPrimary = nord6,
-    primaryContainer = nord3,
-    onPrimaryContainer = nord4,
-
     secondary = nord9,
     onSecondary = nord6,
-
     tertiary = nord10,
     onTertiary = nord6,
+
+    primaryContainer = nord1,
+    onPrimaryContainer = nord4,
+    secondaryContainer = nord2,
+    onSecondaryContainer = nord4,
+    tertiaryContainer = nord3,
+    onTertiaryContainer = nord4,
 
     error = nord11,
     onError = nord6,

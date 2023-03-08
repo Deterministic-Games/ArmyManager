@@ -12,13 +12,19 @@ fun Navigation(viewModel: ArmyViewModel) {
 
     NavHost(
         navController = navController,
-        startDestination = "army_screen"
+        startDestination = Screen.ArmyScreen.route
     ) {
-        composable(route = "start_screen") {
+        composable(route = Screen.StartScreen.route) {
 
         }
-        composable(route = "army_screen") {
+        composable(route = Screen.ArmyScreen.route) {
             ArmyScreen(armyViewModel = viewModel)
         }
     }
+}
+
+
+sealed class Screen(val route: String) {
+    object ArmyScreen : Screen("army_screen")
+    object StartScreen : Screen("start_screen")
 }
