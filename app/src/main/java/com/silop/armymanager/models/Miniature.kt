@@ -16,7 +16,9 @@ data class Miniature(
     @ColumnInfo(name = "equipped_weapons")
     val equippedWeapons: MutableList<Weapon> = mutableListOf(),
     @ColumnInfo(name = "unit")
-    var unitName: String
+    var unitName: String,
+    @ColumnInfo(name = "army")
+    var armyName: String
 ) {
     @get:Ignore
     val points: Int

@@ -1,150 +1,188 @@
 package com.silop.armymanager.views
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.silop.armymanager.viewmodels.ArmyViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.silop.armymanager.models.Miniature
 import com.silop.armymanager.ui.theme.ArmyManagerTheme
+import com.silop.armymanager.R
+import kotlinx.coroutines.launch
 
 @Composable
 fun ArmyScreen(
-    armyViewModel: ArmyViewModel = viewModel()
+    armyViewModel: ArmyViewModel = viewModel(),
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed)
 ) {
     val minis by armyViewModel.minis.collectAsState(emptyList())
 
     // Name
-    val name = "Admech army"
+    val name = "Admech Army"
 
     ArmyManagerTheme {
         Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
+            modifier = Modifier.fillMaxSize()
         ) {
-            ArmyLayout(name = name, minis)
+            ModalNavigationDrawer(
+                drawerState = drawerState,
+                drawerContent = {
+                    ModalDrawerSheet(
+                        modifier = Modifier
+                            .width(175.dp)
+                            .fillMaxHeight()
+                    ) {
+                        NavigationDrawerItem(
+                            label = {
+                                Text(
+                                    text = "Idk"
+                                )
+                            },
+                            selected = false,
+                            onClick = {
+                                /*TODO*/
+                            }
+                        )
+                    }
+                }
+            ) {
+                Scaffold(topBar = {
+                    TopBar(name, drawerState)
+                }, content = { innerPadding ->
+                    ArmyLayout(minis, innerPadding)
+                })
+            }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArmyLayout(name: String, minis: List<Miniature>) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp)
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = MaterialTheme.shapes.small)
-            .clickable {
+fun TopBar(armyName: String, drawerState: DrawerState) {
+    val scope = rememberCoroutineScope()
 
-            },
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+    CenterAlignedTopAppBar(title = {
         Text(
-            text = name,
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.primary
+            text = armyName, maxLines = 1
         )
+    }, navigationIcon = {
+        IconButton(onClick = {
+            scope.launch {
+                drawerState.open()
+            }
+        }) {
+            Icon(
+                painter = painterResource(id = R.drawable.menu), contentDescription = null
+            )
+        }
+    }, actions = {
+        IconButton(onClick = {
+            /* TODO: open settings */
+        }) {
+            Icon(
+                painter = painterResource(id = R.drawable.settings), contentDescription = null
+            )
+        }
+    })
+}
 
+@Composable
+fun ArmyLayout(minis: List<Miniature>, padding: PaddingValues) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(), contentPadding = padding
+    ) {
         minis.groupBy { it.unitName }.forEach { (unitName, miniatures) ->
-            UnitLayout(name = unitName, minis = miniatures)
+            item {
+                UnitLayout(unitName = unitName, minis = miniatures)
+            }
         }
     }
 }
 
 @Composable
-fun UnitLayout(name: String, minis: List<Miniature>) {
+fun UnitLayout(unitName: String, minis: List<Miniature>) {
     Column(
         modifier = Modifier
             .clip(shape = MaterialTheme.shapes.small)
             .padding(top = 2.dp, bottom = 2.dp, start = 5.dp, end = 5.dp)
-            .background(
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                shape = MaterialTheme.shapes.small)
             .clickable {
 
             },
     ) {
         Text(
             modifier = Modifier.padding(5.dp),
-            text = name,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.secondary
+            text = unitName,
+            style = MaterialTheme.typography.titleMedium
         )
 
         Row(Modifier.padding(start = 5.dp, end = 5.dp)) {
             Text(
-                modifier = Modifier.width(30.dp),
-                text = "No.",
-                color = MaterialTheme.colorScheme.tertiary
+                modifier = Modifier.width(30.dp), text = "No."
             )
 
             Spacer(Modifier.width(10.dp))
 
             Text(
-                modifier = Modifier.width(110.dp),
-                text = "Name",
-                color = MaterialTheme.colorScheme.tertiary
+                modifier = Modifier.width(110.dp), text = "Name"
             )
 
             Spacer(Modifier.width(10.dp))
-            
+
             Text(
-                modifier = Modifier.width(110.dp),
-                text = "Weapons",
-                color = MaterialTheme.colorScheme.tertiary
+                modifier = Modifier.width(110.dp), text = "Weapons"
             )
 
             Spacer(Modifier.width(10.dp))
-            
+
             Text(
-                modifier = Modifier.width(50.dp),
-                text = "Pts.",
-                color = MaterialTheme.colorScheme.tertiary
+                modifier = Modifier.width(50.dp), text = "Pts."
             )
         }
 
         val groups = minis.groupBy { Pair(it.name, it.equippedWeapons) }
 
-        Column(Modifier
-                   .padding(start = 5.dp, end = 5.dp)
-                   .background(
-                       color = MaterialTheme.colorScheme.primaryContainer,
-                       shape = MaterialTheme.shapes.extraSmall
-                   )
+        Column(
+            Modifier.padding(start = 5.dp, end = 5.dp)
         ) {
             for (group in groups.values) {
                 MiniatureLayout(
-                    miniature = group.first(),
+                    mini = group.first(),
                     amount = group.size,
-                    points = group.sumOf { it.points }
-                )
+                    points = group.sumOf { it.points })
             }
         }
+        Row(
+            modifier = Modifier.padding(start = 5.dp, end = 5.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Text(text = "Points total")
+
+            Spacer(Modifier.width(30.dp))
+
+            Text(text = minis.sumOf { it.points }.toString())
+        }
+
         Spacer(Modifier.height(5.dp))
     }
 }
 
 @Composable
-fun MiniatureLayout(miniature: Miniature, amount: Int, points: Int) {
+fun MiniatureLayout(mini: Miniature, amount: Int, points: Int) {
     Row(
         Modifier
             .padding(start = 5.dp, end = 5.dp)
             .clickable {
 
-            }
-    ) {
+            }) {
         Text(
             modifier = Modifier.width(30.dp),
             text = amount.toString(),
@@ -155,7 +193,7 @@ fun MiniatureLayout(miniature: Miniature, amount: Int, points: Int) {
 
         Text(
             modifier = Modifier.width(110.dp),
-            text = miniature.name,
+            text = mini.name,
             style = MaterialTheme.typography.titleSmall
         )
 
@@ -163,7 +201,7 @@ fun MiniatureLayout(miniature: Miniature, amount: Int, points: Int) {
 
 
         Column(Modifier.width(110.dp)) {
-            for (weapon in miniature.equippedWeapons) {
+            for (weapon in mini.equippedWeapons) {
                 Text(
                     modifier = Modifier.width(110.dp),
                     text = weapon.name,

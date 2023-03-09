@@ -8,7 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import com.silop.armymanager.database.ArmyDao
 import com.silop.armymanager.database.ArmyDatabase
 import com.silop.armymanager.models.Miniature
-import com.silop.armymanager.ui.theme.ArmyManagerTheme
+import com.silop.armymanager.models.Weapon
 import com.silop.armymanager.viewmodels.ArmyViewModel
 import com.silop.armymanager.views.Navigation
 
