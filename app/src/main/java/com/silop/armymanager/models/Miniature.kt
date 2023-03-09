@@ -1,11 +1,20 @@
 package com.silop.armymanager.models
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
+import androidx.room.*
+import androidx.room.ForeignKey.Companion.CASCADE
 
-@Entity(tableName = "minis")
+@Entity(
+    tableName = "minis",
+    foreignKeys = [
+        ForeignKey(
+            entity = Army::class,
+            parentColumns = ["name"],
+            childColumns = ["army"],
+            onDelete = CASCADE,
+            onUpdate = CASCADE
+        )
+    ]
+)
 data class Miniature(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
