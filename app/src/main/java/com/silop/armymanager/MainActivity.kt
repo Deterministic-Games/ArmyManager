@@ -6,30 +6,28 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
 import com.silop.armymanager.database.ArmyDao
+import com.silop.armymanager.database.MiniDao
 import com.silop.armymanager.database.ArmyDatabase
-import com.silop.armymanager.models.Miniature
-import com.silop.armymanager.models.Weapon
 import com.silop.armymanager.viewmodels.ArmyViewModel
 import com.silop.armymanager.views.Navigation
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-lateinit var dao: ArmyDao
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val armyViewModel: ArmyViewModel by viewModels()
+
+    @Inject lateinit var miniDao: MiniDao
+    @Inject lateinit var armyDao: ArmyDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val db = ArmyDatabase.getDatabase(this)
-        dao = db.armyDao()
-
         setContent {
             LaunchedEffect(Unit) {
-                try {
-                    armyViewModel.loadMinis()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+                armyViewModel.loadArmies()
             }
             Navigation(viewModel = armyViewModel)
         }
