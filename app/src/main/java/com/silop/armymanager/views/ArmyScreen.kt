@@ -81,7 +81,8 @@ fun TopBar(armyName: String, drawerState: DrawerState) {
             }
         }) {
             Icon(
-                painter = painterResource(id = R.drawable.menu), contentDescription = null
+                painter = painterResource(id = R.drawable.menu),
+                contentDescription = null
             )
         }
     }, actions = {
@@ -89,7 +90,8 @@ fun TopBar(armyName: String, drawerState: DrawerState) {
             /* TODO: open settings */
         }) {
             Icon(
-                painter = painterResource(id = R.drawable.settings), contentDescription = null
+                painter = painterResource(id = R.drawable.settings),
+                contentDescription = null
             )
         }
     })
@@ -98,7 +100,8 @@ fun TopBar(armyName: String, drawerState: DrawerState) {
 @Composable
 fun ArmyLayout(minis: List<Miniature>, padding: PaddingValues) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(), contentPadding = padding
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = padding
     ) {
         minis.groupBy { it.unitName }.forEach { (unitName, miniatures) ->
             item {
