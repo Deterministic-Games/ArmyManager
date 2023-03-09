@@ -2,112 +2,67 @@ package com.silop.armymanager.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val md_theme_light_primary = Color(0xFF00687A)
+val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val md_theme_light_primaryContainer = Color(0xFFACECFF)
+val md_theme_light_onPrimaryContainer = Color(0xFF001F26)
+val md_theme_light_secondary = Color(0xFF00639A)
+val md_theme_light_onSecondary = Color(0xFFFFFFFF)
+val md_theme_light_secondaryContainer = Color(0xFFCEE5FF)
+val md_theme_light_onSecondaryContainer = Color(0xFF001D32)
+val md_theme_light_tertiary = Color(0xFF0B61A4)
+val md_theme_light_onTertiary = Color(0xFFFFFFFF)
+val md_theme_light_tertiaryContainer = Color(0xFFD2E4FF)
+val md_theme_light_onTertiaryContainer = Color(0xFF001C37)
+val md_theme_light_error = Color(0xFFBA1A1A)
+val md_theme_light_errorContainer = Color(0xFFFFDAD6)
+val md_theme_light_onError = Color(0xFFFFFFFF)
+val md_theme_light_onErrorContainer = Color(0xFF410002)
+val md_theme_light_background = Color(0xFFFBFCFD)
+val md_theme_light_onBackground = Color(0xFF191C1D)
+val md_theme_light_surface = Color(0xFFFBFCFD)
+val md_theme_light_onSurface = Color(0xFF191C1D)
+val md_theme_light_surfaceVariant = Color(0xFFDBE4E7)
+val md_theme_light_onSurfaceVariant = Color(0xFF3F484B)
+val md_theme_light_outline = Color(0xFF70797C)
+val md_theme_light_inverseOnSurface = Color(0xFFEFF1F2)
+val md_theme_light_inverseSurface = Color(0xFF2E3132)
+val md_theme_light_inversePrimary = Color(0xFF56D6F4)
+val md_theme_light_shadow = Color(0xFF000000)
+val md_theme_light_surfaceTint = Color(0xFF00687A)
+val md_theme_light_outlineVariant = Color(0xFFBFC8CB)
+val md_theme_light_scrim = Color(0xFF000000)
 
-/**
- * Nord theme taken from https://www.nordtheme.com/docs/colors-and-palettes
- */
-
-// Polar Night
-
-/**
- * Used for background and area coloring.
- */
-val nord0 = Color(0xFF2E3440)
-
-/**
- * Used for elevated, more prominent or focused UI elements like:
- * * status bars and text editor gutters
- * * panels, modals and floating popups like notifications or auto completion
- * * user interaction/form components like buttons, text/select fields or checkboxes
- *
- * It also works fine for more inconspicuous and passive elements like borders or as
- * dropshadow between different components.
- */
-val nord1 = Color(0xFF3B4252)
-
-/**
- * Used as a brigther variant for the same target elements like nord1
- */
-val nord2 = Color(0xFF434C5E)
-
-/**
- * Used for the most subtle/inconspicuous UI text elements that do not need so much
- * visual attention
- */
-val nord3 = Color(0xFF4C566A)
-
-
-// Snow Storm
-
-/**
- * Used for elevated, more prominent or focused UI elements like:
- * * status bars and text editor gutters
- * * panels, modals and floating popups like notifications or auto completion
- * * user interaction/form components like buttons, text/select fields or checkboxes
- */
-val nord4 = Color(0xFFD8DEE9)
-
-
-/**
- * Used for more subtle/inconspicuous UI text elements that do not need much visual attention.
- * Other use cases are also state animations like a more brighter text color when a button is
- * hovered, active or focused.
- */
-val nord5 = Color(0xFFE5E9F0)
-
-/**
- * Used for elevated UI elements that require more visual attention.
- */
-val nord6 = Color(0xFFECEFF4)
-
-
-// Frost
-
-/**
- * Used for UI elements that should, next to the primary accent color nord8, stand out and get
- * more visual attention.
- */
-val nord7 = Color(0xFF8FBCBB)
-
-/**
- * Used for primary UI elements with main usage purposed that require the most visual attention
- */
-val nord8 = Color(0xFF88C0D0)
-
-/**
- * Used for secondary UI elements that also require more visual attention than other elements.
- */
-val nord9 = Color(0xFF81A1C1)
-
-/**
- * Used for tertiary UI elements that require more visual attention than default elements.
- */
-val nord10 = Color(0xFF5E81AC)
+val md_theme_dark_primary = Color(0xFF56D6F4)
+val md_theme_dark_onPrimary = Color(0xFF003640)
+val md_theme_dark_primaryContainer = Color(0xFF004E5C)
+val md_theme_dark_onPrimaryContainer = Color(0xFFACECFF)
+val md_theme_dark_secondary = Color(0xFF95CCFF)
+val md_theme_dark_onSecondary = Color(0xFF003353)
+val md_theme_dark_secondaryContainer = Color(0xFF004A75)
+val md_theme_dark_onSecondaryContainer = Color(0xFFCEE5FF)
+val md_theme_dark_tertiary = Color(0xFFA0C9FF)
+val md_theme_dark_onTertiary = Color(0xFF003259)
+val md_theme_dark_tertiaryContainer = Color(0xFF00497F)
+val md_theme_dark_onTertiaryContainer = Color(0xFFD2E4FF)
+val md_theme_dark_error = Color(0xFFFFB4AB)
+val md_theme_dark_errorContainer = Color(0xFF93000A)
+val md_theme_dark_onError = Color(0xFF690005)
+val md_theme_dark_onErrorContainer = Color(0xFFFFDAD6)
+val md_theme_dark_background = Color(0xFF191C1D)
+val md_theme_dark_onBackground = Color(0xFFE1E3E4)
+val md_theme_dark_surface = Color(0xFF191C1D)
+val md_theme_dark_onSurface = Color(0xFFE1E3E4)
+val md_theme_dark_surfaceVariant = Color(0xFF3F484B)
+val md_theme_dark_onSurfaceVariant = Color(0xFFBFC8CB)
+val md_theme_dark_outline = Color(0xFF899295)
+val md_theme_dark_inverseOnSurface = Color(0xFF191C1D)
+val md_theme_dark_inverseSurface = Color(0xFFE1E3E4)
+val md_theme_dark_inversePrimary = Color(0xFF00687A)
+val md_theme_dark_shadow = Color(0xFF000000)
+val md_theme_dark_surfaceTint = Color(0xFF56D6F4)
+val md_theme_dark_outlineVariant = Color(0xFF3F484B)
+val md_theme_dark_scrim = Color(0xFF000000)
 
 
-// Aurora
-
-/**
- * Used for UI elements that are rendering error states
- */
-val nord11 = Color(0xFFBF616A)
-
-/**
- * Rarely used for UI elements, but it may indicate a more advanced or dangerous functionality.
- */
-val nord12 = Color(0xFFD08770)
-
-/**
- * Used for UI elements that are rendering warning states.
- */
-val nord13 = Color(0xFFEBCB8B)
-
-/**
- * Used for UI elements that are rendering success states and visualizations.
- */
-val nord14 = Color(0xFFA3BE8C)
-
-/**
- * Rarely used for UI elements, but it may indicate a more uncommon functionality.
- */
-val nord15 = Color(0xFFB48EAD)
+val seed = Color(0xFF88C0D0)

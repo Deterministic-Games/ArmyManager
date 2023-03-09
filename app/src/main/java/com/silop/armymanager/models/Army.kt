@@ -1,7 +1,19 @@
 package com.silop.armymanager.models
 
+import androidx.room.*
+
+@Entity(
+    tableName = "armies",
+    indices = [
+        Index(
+            value = ["name"],
+            unique = true
+        )
+    ]
+)
 data class Army(
-    var name: String,
-    val units: MutableList<Unit> = mutableListOf(),
-    val characters: Unit = Unit("Characters")
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
+    @ColumnInfo(name = "name")
+    val name: String
 )
