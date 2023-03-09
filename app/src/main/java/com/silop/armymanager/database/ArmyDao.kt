@@ -1,20 +1,19 @@
 package com.silop.armymanager.database
 
 import androidx.room.*
-import com.silop.armymanager.models.Miniature
+import com.silop.armymanager.models.Army
 
 @Dao
-interface ArmyDao
-{
-    @Query("SELECT * FROM minis")
-    suspend fun getMinis(): List<Miniature>
+interface ArmyDao {
+    @Query("SELECT * FROM armies")
+    suspend fun getArmies(): List<Army>
 
     @Insert
-    suspend fun insertMini(mini: Miniature)
+    suspend fun insertArmy(army: Army)
 
     @Delete
-    suspend fun deleteMini(mini: Miniature)
+    suspend fun deleteArmy(army: Army)
 
     @Update
-    suspend fun updateMini(mini: Miniature)
+    suspend fun updateArmy(army: Army)
 }
