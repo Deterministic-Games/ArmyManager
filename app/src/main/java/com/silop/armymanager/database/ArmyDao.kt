@@ -8,6 +8,9 @@ interface ArmyDao {
     @Query("SELECT * FROM armies")
     suspend fun getArmies(): List<Army>
 
+    @Query("SELECT * FROM armies WHERE name = :armyName")
+    suspend fun getArmy(armyName: String): Army
+
     @Insert
     suspend fun insertArmy(army: Army)
 

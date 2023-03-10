@@ -4,10 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -15,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.silop.armymanager.viewmodels.ArmyViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.silop.armymanager.models.Miniature
-import com.silop.armymanager.ui.theme.ArmyManagerTheme
 import com.silop.armymanager.R
 import kotlinx.coroutines.launch
 
@@ -25,42 +21,38 @@ fun ArmyScreen(
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed)
 ) {
     val minis by armyViewModel.minis.collectAsState(emptyList())
+    val armies by armyViewModel.armies.collectAsState(emptyList())
+    val army by armyViewModel.army.collectAsState()
 
-    // Name
-    val name = "Admech Army"
-
-    ArmyManagerTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            ModalNavigationDrawer(
-                drawerState = drawerState,
-                drawerContent = {
-                    ModalDrawerSheet(
-                        modifier = Modifier
-                            .width(175.dp)
-                            .fillMaxHeight()
-                    ) {
-                        NavigationDrawerItem(
-                            label = {
-                                Text(
-                                    text = "Idk"
-                                )
-                            },
-                            selected = false,
-                            onClick = {
-                                /*TODO*/
-                            }
-                        )
-                    }
-                }
+    Surface(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
+            ModalDrawerSheet(
+                modifier = Modifier
+                    .width(175.dp)
+                    .fillMaxHeight()
             ) {
-                Scaffold(topBar = {
-                    TopBar(name, drawerState)
-                }, content = { innerPadding ->
-                    ArmyLayout(minis, innerPadding)
-                })
+                armies.forEach {
+                    NavigationDrawerItem(
+                        label = {
+                            Text(text = it.name)
+                        },
+                        selected = it.name == army.name,
+                        onClick = {
+                            if (it.name != army.name) {
+                                armyViewModel.loadArmy(it.name)
+                            }
+                        }
+                    )
+                }
             }
+        }) {
+            Scaffold(topBar = {
+                TopBar(army.name, drawerState)
+            }, content = { innerPadding ->
+                ArmyLayout(minis, innerPadding)
+            })
         }
     }
 }
@@ -81,8 +73,7 @@ fun TopBar(armyName: String, drawerState: DrawerState) {
             }
         }) {
             Icon(
-                painter = painterResource(id = R.drawable.menu),
-                contentDescription = null
+                painter = painterResource(id = R.drawable.menu), contentDescription = null
             )
         }
     }, actions = {
@@ -90,8 +81,7 @@ fun TopBar(armyName: String, drawerState: DrawerState) {
             /* TODO: open settings */
         }) {
             Icon(
-                painter = painterResource(id = R.drawable.settings),
-                contentDescription = null
+                painter = painterResource(id = R.drawable.settings), contentDescription = null
             )
         }
     })
@@ -100,8 +90,7 @@ fun TopBar(armyName: String, drawerState: DrawerState) {
 @Composable
 fun ArmyLayout(minis: List<Miniature>, padding: PaddingValues) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = padding
+        modifier = Modifier.fillMaxSize(), contentPadding = padding
     ) {
         minis.groupBy { it.unitName }.forEach { (unitName, miniatures) ->
             item {
@@ -157,10 +146,9 @@ fun UnitLayout(unitName: String, minis: List<Miniature>) {
             Modifier.padding(start = 5.dp, end = 5.dp)
         ) {
             for (group in groups.values) {
-                MiniatureLayout(
-                    mini = group.first(),
-                    amount = group.size,
-                    points = group.sumOf { it.points })
+                MiniatureLayout(mini = group.first(),
+                                amount = group.size,
+                                points = group.sumOf { it.points })
             }
         }
         Row(
