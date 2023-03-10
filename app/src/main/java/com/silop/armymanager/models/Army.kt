@@ -13,7 +13,7 @@ import androidx.room.*
 )
 data class Army(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Int = 0,
     @ColumnInfo(name = "name")
     val name: String
 )
