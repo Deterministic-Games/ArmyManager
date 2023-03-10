@@ -32,6 +32,20 @@ class ArmyViewModel @Inject constructor(
         }
     }
 
+    fun addArmy(army: Army) {
+        viewModelScope.launch {
+            armyDao.insertArmy(army)
+        }
+    }
+
+    fun deleteArmy(army: Army) {
+        viewModelScope.launch {
+            armyDao.deleteArmy(army)
+            _minis.value = emptyList()
+            _armies.value = armyDao.getArmies()
+        }
+    }
+
     fun loadArmy(armyName: String) {
         viewModelScope.launch {
             _minis.value = miniDao.getArmy(armyName)
