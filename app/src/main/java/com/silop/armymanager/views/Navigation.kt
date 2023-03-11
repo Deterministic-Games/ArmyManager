@@ -12,10 +12,10 @@ fun Navigation(viewModel: ArmyViewModel) {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.ArmyScreen.route
+        startDestination = Screen.StartScreen.route
     ) {
         composable(route = Screen.StartScreen.route) {
-
+            StartScreen(navController, viewModel)
         }
         composable(route = Screen.ArmyScreen.route) {
             ArmyScreen(armyViewModel = viewModel)

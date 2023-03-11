@@ -1,5 +1,6 @@
 package com.silop.armymanager.viewmodels
 
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.silop.armymanager.database.ArmyDao
@@ -26,8 +27,25 @@ class ArmyViewModel @Inject constructor(
 
     val armies = _armies.asStateFlow()
 
+    private val _army = MutableStateFlow(Army(name = ""))
+    val army = _army.asStateFlow()
+
     fun loadArmies() {
         viewModelScope.launch {
+            _armies.value = armyDao.getArmies()
+        }
+    }
+
+    fun addArmy(army: Army) {
+        viewModelScope.launch {
+            armyDao.insertArmy(army)
+        }
+    }
+
+    fun deleteArmy(army: Army) {
+        viewModelScope.launch {
+            armyDao.deleteArmy(army)
+            _minis.value = emptyList()
             _armies.value = armyDao.getArmies()
         }
     }
@@ -35,6 +53,7 @@ class ArmyViewModel @Inject constructor(
     fun loadArmy(armyName: String) {
         viewModelScope.launch {
             _minis.value = miniDao.getArmy(armyName)
+            _army.value = armyDao.getArmy(armyName)
         }
     }
 
