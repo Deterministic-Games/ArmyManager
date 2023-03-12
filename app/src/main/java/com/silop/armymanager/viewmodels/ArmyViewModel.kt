@@ -20,11 +20,9 @@ class ArmyViewModel @Inject constructor(
     private val armyDao: ArmyDao
 ) : ViewModel() {
     private val _minis = MutableStateFlow<List<Miniature>>(emptyList())
-
     val minis = _minis.asStateFlow()
 
     private val _armies = MutableStateFlow<List<Army>>(emptyList())
-
     val armies = _armies.asStateFlow()
 
     private val _army = MutableStateFlow(Army(name = ""))

@@ -17,10 +17,7 @@ import com.silop.armymanager.models.Army
 import com.silop.armymanager.viewmodels.ArmyViewModel
 
 @Composable
-fun StartScreen(
-    navController: NavController,
-    viewModel: ArmyViewModel
-) {
+fun StartScreen(navController: NavController, viewModel: ArmyViewModel) {
     val armies = viewModel.armies.collectAsState(emptyList()).value
 
     Surface(
@@ -31,10 +28,7 @@ fun StartScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "Army Manager",
-                style = MaterialTheme.typography.titleLarge
-            )
+            Text(text = "Army Manager", style = MaterialTheme.typography.titleLarge)
             if (armies.isEmpty()) {
                 EmptyScreen(navController, viewModel)
             } else {
@@ -47,12 +41,10 @@ fun StartScreen(
 
 @Composable
 fun EmptyScreen(
-    navController: NavController,
-    viewModel: ArmyViewModel
+    navController: NavController, viewModel: ArmyViewModel
 ) {
     Text(
-        text = "Looks like you have no armies",
-        style = MaterialTheme.typography.bodyMedium
+        text = "Looks like you have no armies", style = MaterialTheme.typography.bodyMedium
     )
     ElevatedButton(
         onClick = {
@@ -62,35 +54,25 @@ fun EmptyScreen(
 
         }
     ) {
-        Text(
-            text = "Start here"
-        )
+        Text(text = "Start here")
     }
 }
 
 @Composable
-fun NormalScreen(
-    navController: NavController,
-    viewModel: ArmyViewModel,
-    armies: List<Army>
-) {
+fun NormalScreen(navController: NavController, viewModel: ArmyViewModel, armies: List<Army>) {
     armies.forEach {
-        ElevatedButton(
-            onClick = {
-                viewModel.loadArmy(it.name)
-                navController.navigate(Screen.ArmyScreen.route)
-            }
-        ) {
+        ElevatedButton(onClick = {
+            viewModel.loadArmy(it.name)
+            navController.navigate(Screen.ArmyScreen.route)
+        }) {
             Text(
                 text = it.name
             )
         }
     }
-    ElevatedButton(
-        onClick = {
-            /* TODO */
-        }
-    ) {
+    ElevatedButton(onClick = {
+        /* TODO */
+    }) {
         Text(
             text = "New army"
         )

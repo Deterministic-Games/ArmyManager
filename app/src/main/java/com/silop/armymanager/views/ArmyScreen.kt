@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -25,25 +26,29 @@ fun ArmyScreen(
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
-            ModalDrawerSheet(
-                modifier = Modifier
-                    .width(192.dp)
-                    .fillMaxHeight()
-            ) {
-                armies.forEach {
-                    NavigationDrawerItem(label = { Text(text = it.name) },
-                                         selected = it.name == army.name,
-                                         onClick = {
-                                             if (it.name != army.name) {
-                                                 armyViewModel.loadArmy(it.name)
-                                             }
-                                         })
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            drawerContent = {
+                ModalDrawerSheet(
+                    modifier = Modifier
+                        .width(192.dp)
+                        .fillMaxHeight()
+                ) {
+                    armies.forEach {
+                        NavigationDrawerItem(
+                            label = { Text(text = it.name) },
+                            selected = it.name == army.name,
+                            onClick = {
+                                if (it.name != army.name) {
+                                    armyViewModel.loadArmy(it.name)
+                                }
+                            }
+                        )
+                    }
                 }
-            }
-        }) {
+            }) {
             Scaffold(topBar = { TopBar(army.name, drawerState) },
-                     content = { padding -> ArmyLayout(minis, padding) })
+                content = { padding -> ArmyLayout(minis, padding) })
         }
     }
 }
@@ -53,29 +58,38 @@ fun ArmyScreen(
 fun TopBar(armyName: String, drawerState: DrawerState) {
     val scope = rememberCoroutineScope()
 
-    CenterAlignedTopAppBar(title = {
-        Text(
-            text = armyName, maxLines = 1
-        )
-    }, navigationIcon = {
-        IconButton(onClick = {
-            scope.launch {
-                drawerState.open()
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = armyName, maxLines = 1
+            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = {
+                    scope.launch {
+                        drawerState.open()
+                    }
+                }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.menu),
+                    contentDescription = null
+                )
             }
-        }) {
-            Icon(
-                painter = painterResource(R.drawable.menu), contentDescription = null
-            )
-        }
-    }, actions = {
-        IconButton(onClick = {
-            /* TODO: open settings */
-        }) {
-            Icon(
-                painter = painterResource(R.drawable.settings), contentDescription = null
-            )
-        }
-    })
+        },
+        actions = {
+            IconButton(
+                onClick = {
+                    /* TODO: open settings */
+                }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.settings),
+                    contentDescription = null
+                )
+            }
+        })
 }
 
 @Composable
@@ -87,11 +101,12 @@ fun ArmyLayout(minis: List<Miniature>, padding: PaddingValues) {
         bottom = padding.calculateBottomPadding()
     )
     LazyColumn(
-        modifier = Modifier.fillMaxSize(), contentPadding = padding2
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = padding2
     ) {
         minis.groupBy { it.unitName }.forEach { (unitName, miniatures) ->
             item {
-                UnitLayout(unitName = unitName, minis = miniatures)
+                UnitLayout(unitName, miniatures)
                 Spacer(Modifier.height(8.dp))
             }
         }
@@ -104,29 +119,34 @@ fun UnitLayout(unitName: String, minis: List<Miniature>) {
     ElevatedCard(
         onClick = {
             /*TODO*/
-        },
+        }
     ) {
-        Column {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
             Text(
                 modifier = Modifier.padding(start = 16.dp),
                 text = unitName,
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineSmall
             )
 
             Divider(Modifier.padding(start = 16.dp, end = 16.dp))
 
             minis.groupBy { it.name }.forEach { (name, minis) ->
-                ListItem(headlineText = { Text(name) },
-                         supportingText = { Text("${minis.sumOf { it.points }} pts") },
-                         leadingContent = { Text(minis.size.toString()) },
-                         trailingContent = {
-                             IconButton(onClick = { /*TODO*/ }) {
-                                 Icon(
-                                     painter = painterResource(R.drawable.arrow_right),
-                                     contentDescription = null
-                                 )
-                             }
-                         }
+                ListItem(
+                    headlineText = { Text(name) },
+                    supportingText = { Text("${minis.sumOf { it.points }} pts") },
+                    leadingContent = { Text(minis.size.toString()) },
+                    trailingContent = {
+                        IconButton(
+                            onClick = { /*TODO*/ }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.arrow_right),
+                                contentDescription = null
+                            )
+                        }
+                    }
                 )
             }
 
