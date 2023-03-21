@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.silop.armymanager.addDummyData
 import com.silop.armymanager.data.models.Army
+import com.silop.armymanager.ui.navigation.Screen
 import com.silop.armymanager.viewmodels.ArmyViewModel
 
 @Composable

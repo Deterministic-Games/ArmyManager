@@ -10,7 +10,7 @@ import com.silop.armymanager.data.models.Miniature
 import com.silop.armymanager.data.models.Weapon
 import com.silop.armymanager.ui.theme.ArmyManagerTheme
 import com.silop.armymanager.viewmodels.ArmyViewModel
-import com.silop.armymanager.screens.Navigation
+import com.silop.armymanager.ui.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 
 

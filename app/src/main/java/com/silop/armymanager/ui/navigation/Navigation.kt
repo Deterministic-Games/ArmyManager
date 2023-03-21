@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.silop.armymanager.viewmodels.ArmyViewModel
+import com.silop.armymanager.ui.screens.*
 
 @Composable
 fun Navigation(viewModel: ArmyViewModel) {
@@ -21,10 +22,4 @@ fun Navigation(viewModel: ArmyViewModel) {
             ArmyScreen(armyViewModel = viewModel)
         }
     }
-}
-
-
-sealed class Screen(val route: String) {
-    object ArmyScreen : Screen("army_screen")
-    object StartScreen : Screen("start_screen")
 }

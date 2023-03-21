@@ -3,6 +3,8 @@ package com.silop.armymanager.ui.screens
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -13,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.silop.armymanager.viewmodels.ArmyViewModel
 import com.silop.armymanager.data.models.Miniature
 import com.silop.armymanager.R
+import com.silop.armymanager.ui.screens.components.UnitDialog
 import kotlinx.coroutines.launch
 
 @Composable
@@ -53,6 +56,7 @@ fun ArmyScreen(
         ) {
             Scaffold(
                 topBar = { TopBar(army.name, drawerState) },
+                bottomBar = { BottomBar(armyViewModel) },
                 content = { padding -> ArmyLayout(minis, padding) },
                 floatingActionButton = {
                     FloatingActionButton(
@@ -74,55 +78,6 @@ fun ArmyScreen(
             }
         }
     }
-}
-
-@Composable
-fun UnitDialog(openDialog: MutableState<Boolean>, unitName: String = "") {
-    val name = remember { mutableStateOf(unitName) }
-
-    AlertDialog(
-        modifier = Modifier.fillMaxSize(),
-        onDismissRequest = { openDialog.value = false },
-        title = {
-            Text(
-                text = "Unit Editor"
-            )
-        },
-        text = {
-            Column {
-                OutlinedTextField(
-                    value = name.value,
-                    onValueChange = { name.value = it },
-                    singleLine = true,
-                    placeholder = { Text("Unit Name") },
-                    trailingIcon = {
-                        Icon(
-                            painter = painterResource(R.drawable.edit),
-                            contentDescription = "Edit unit name"
-                        )
-                    }
-                )
-            }
-        },
-        confirmButton = {
-            ElevatedButton(
-                onClick = { openDialog.value = false }
-            ) {
-                Text(text = "Confirm")
-            }
-        },
-        dismissButton = {
-            IconButton(
-                onClick = { openDialog.value = false }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.close),
-                    contentDescription = "Exit editor"
-                )
-            }
-        },
-        properties = DialogProperties(usePlatformDefaultWidth = false)
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -157,11 +112,26 @@ fun TopBar(armyName: String, drawerState: DrawerState) {
                 }
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.settings),
+                    painter = painterResource(R.drawable.edit),
                     contentDescription = null
                 )
             }
         })
+}
+
+@Composable
+fun BottomBar(viewModel: ArmyViewModel) {
+    BottomAppBar {
+        IconButton(onClick = { /* doSomething() */ }) {
+            Icon(Icons.Filled.Menu, contentDescription = "Localized description")
+        }
+        IconButton(onClick = { /* doSomething() */ }) {
+            Icon(Icons.Filled.Menu, contentDescription = "Localized description")
+        }
+        IconButton(onClick = { /* doSomething() */ }) {
+            Icon(Icons.Filled.Menu, contentDescription = "Localized description")
+        }
+    }
 }
 
 @Composable
