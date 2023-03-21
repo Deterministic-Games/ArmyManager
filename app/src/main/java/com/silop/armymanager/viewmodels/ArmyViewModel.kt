@@ -2,10 +2,10 @@ package com.silop.armymanager.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.silop.armymanager.database.ArmyDao
-import com.silop.armymanager.database.MiniDao
-import com.silop.armymanager.models.Army
-import com.silop.armymanager.models.Miniature
+import com.silop.armymanager.data.database.ArmyDao
+import com.silop.armymanager.data.database.MiniDao
+import com.silop.armymanager.data.models.Army
+import com.silop.armymanager.data.models.Miniature
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*

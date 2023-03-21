@@ -1,4 +1,4 @@
-package com.silop.armymanager.database
+package com.silop.armymanager.data.database
 
 import android.content.Context
 import androidx.room.Room

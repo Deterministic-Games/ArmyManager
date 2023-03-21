@@ -1,9 +1,8 @@
-package com.silop.armymanager.views
+package com.silop.armymanager.ui.screens
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -12,11 +11,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.silop.armymanager.viewmodels.ArmyViewModel
-import com.silop.armymanager.models.Miniature
+import com.silop.armymanager.data.models.Miniature
 import com.silop.armymanager.R
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArmyScreen(
     armyViewModel: ArmyViewModel = viewModel(),
@@ -85,7 +83,7 @@ fun UnitDialog(openDialog: MutableState<Boolean>, unitName: String = "") {
     AlertDialog(
         modifier = Modifier.fillMaxSize(),
         onDismissRequest = { openDialog.value = false },
-        title = { 
+        title = {
             Text(
                 text = "Unit Editor"
             )

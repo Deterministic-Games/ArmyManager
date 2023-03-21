@@ -1,7 +1,7 @@
-package com.silop.armymanager.database
+package com.silop.armymanager.data.database
 
 import androidx.room.*
-import com.silop.armymanager.models.Army
+import com.silop.armymanager.data.models.Army
 import kotlinx.coroutines.flow.Flow
 
 @Dao

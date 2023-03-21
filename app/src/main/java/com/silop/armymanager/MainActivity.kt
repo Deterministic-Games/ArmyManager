@@ -5,19 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
-import com.silop.armymanager.database.ArmyDao
-import com.silop.armymanager.database.MiniDao
-import com.silop.armymanager.database.ArmyDatabase
-import com.silop.armymanager.models.Army
-import com.silop.armymanager.models.Miniature
-import com.silop.armymanager.models.Weapon
+import com.silop.armymanager.data.models.Army
+import com.silop.armymanager.data.models.Miniature
+import com.silop.armymanager.data.models.Weapon
 import com.silop.armymanager.ui.theme.ArmyManagerTheme
 import com.silop.armymanager.viewmodels.ArmyViewModel
-import com.silop.armymanager.views.Navigation
+import com.silop.armymanager.screens.Navigation
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
-import javax.inject.Inject
-
 
 
 @AndroidEntryPoint
@@ -51,12 +45,14 @@ fun addDummyData(viewModel: ArmyViewModel) {
             armyName = army.name
         )
     }
-    rangers.add(Miniature(
+    rangers.add(
+        Miniature(
         name = "Skitarii Alpha",
         basePoints = 8,
         unitName = "Skitarii Rangers",
         armyName = army.name
-    ))
+    )
+    )
     rangers.forEach {
         it.equippedWeapons.add(Weapon("Galvanic Rifle", 0))
         viewModel.addMini(it)

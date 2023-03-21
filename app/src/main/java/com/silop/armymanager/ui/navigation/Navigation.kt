@@ -1,4 +1,4 @@
-package com.silop.armymanager.views
+package com.silop.armymanager.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
