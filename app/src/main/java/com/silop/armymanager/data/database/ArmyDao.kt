@@ -1,15 +1,16 @@
-package com.silop.armymanager.database
+package com.silop.armymanager.data.database
 
 import androidx.room.*
-import com.silop.armymanager.models.Army
+import com.silop.armymanager.data.models.Army
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ArmyDao {
     @Query("SELECT * FROM armies")
-    suspend fun getArmies(): List<Army>
+    fun getArmies(): Flow<List<Army>>
 
     @Query("SELECT * FROM armies WHERE name = :armyName")
-    suspend fun getArmy(armyName: String): Army
+    fun getArmy(armyName: String): Flow<Army>
 
     @Insert
     suspend fun insertArmy(army: Army)

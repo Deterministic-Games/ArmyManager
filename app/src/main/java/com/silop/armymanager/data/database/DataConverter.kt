@@ -1,10 +1,9 @@
-package com.silop.armymanager.database
+package com.silop.armymanager.data.database
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.silop.armymanager.models.Miniature
-import com.silop.armymanager.models.Weapon
+import com.silop.armymanager.data.models.Weapon
 
 class DataConverter {
     private val gson = Gson()

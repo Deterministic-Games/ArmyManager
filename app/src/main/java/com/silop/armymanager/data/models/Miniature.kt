@@ -1,4 +1,4 @@
-package com.silop.armymanager.models
+package com.silop.armymanager.data.models
 
 import androidx.room.*
 import androidx.room.ForeignKey.Companion.CASCADE

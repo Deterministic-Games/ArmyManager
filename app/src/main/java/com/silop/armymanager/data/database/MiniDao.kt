@@ -1,16 +1,14 @@
-package com.silop.armymanager.database
+package com.silop.armymanager.data.database
 
 import androidx.room.*
-import com.silop.armymanager.models.Miniature
+import com.silop.armymanager.data.models.Miniature
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MiniDao
 {
-    @Query("SELECT * FROM minis")
-    suspend fun getMinis(): List<Miniature>
-
     @Query("SELECT * FROM minis where minis.army = :armyName")
-    suspend fun getArmy(armyName: String): List<Miniature>
+    fun getArmy(armyName: String): Flow<List<Miniature>>
 
     @Insert
     suspend fun insertMini(mini: Miniature)

@@ -1,16 +1,17 @@
-package com.silop.armymanager.views
+package com.silop.armymanager.ui.screens
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.silop.armymanager.viewmodels.ArmyViewModel
-import com.silop.armymanager.models.Miniature
+import com.silop.armymanager.data.models.Miniature
 import com.silop.armymanager.R
 import kotlinx.coroutines.launch
 
@@ -22,6 +23,8 @@ fun ArmyScreen(
     val minis by armyViewModel.minis.collectAsState(emptyList())
     val armies by armyViewModel.armies.collectAsState(emptyList())
     val army by armyViewModel.army.collectAsState()
+
+    val openDialog = remember { mutableStateOf(false) }
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -46,11 +49,80 @@ fun ArmyScreen(
                         )
                     }
                 }
-            }) {
-            Scaffold(topBar = { TopBar(army.name, drawerState) },
-                content = { padding -> ArmyLayout(minis, padding) })
+            }
+        ) {
+            Scaffold(
+                topBar = { TopBar(army.name, drawerState) },
+                content = { padding -> ArmyLayout(minis, padding) },
+                floatingActionButton = {
+                    FloatingActionButton(
+                        onClick = { openDialog.value = true }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.add),
+                            contentDescription = "Add unit"
+                        )
+                    }
+                }
+            )
+            AnimatedVisibility(
+                visible = openDialog.value,
+                enter = expandIn(),
+                exit = shrinkOut()
+            ) {
+                UnitDialog(openDialog, "")
+            }
         }
     }
+}
+
+@Composable
+fun UnitDialog(openDialog: MutableState<Boolean>, unitName: String = "") {
+    val name = remember { mutableStateOf(unitName) }
+
+    AlertDialog(
+        modifier = Modifier.fillMaxSize(),
+        onDismissRequest = { openDialog.value = false },
+        title = {
+            Text(
+                text = "Unit Editor"
+            )
+        },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = name.value,
+                    onValueChange = { name.value = it },
+                    singleLine = true,
+                    placeholder = { Text("Unit Name") },
+                    trailingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.edit),
+                            contentDescription = "Edit unit name"
+                        )
+                    }
+                )
+            }
+        },
+        confirmButton = {
+            ElevatedButton(
+                onClick = { openDialog.value = false }
+            ) {
+                Text(text = "Confirm")
+            }
+        },
+        dismissButton = {
+            IconButton(
+                onClick = { openDialog.value = false }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.close),
+                    contentDescription = "Exit editor"
+                )
+            }
+        },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

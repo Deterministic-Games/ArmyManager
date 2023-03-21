@@ -1,15 +1,14 @@
 package com.silop.armymanager.viewmodels
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.silop.armymanager.database.ArmyDao
-import com.silop.armymanager.database.MiniDao
-import com.silop.armymanager.models.Army
-import com.silop.armymanager.models.Miniature
+import com.silop.armymanager.data.database.ArmyDao
+import com.silop.armymanager.data.database.MiniDao
+import com.silop.armymanager.data.models.Army
+import com.silop.armymanager.data.models.Miniature
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,18 +18,24 @@ class ArmyViewModel @Inject constructor(
     private val miniDao: MiniDao,
     private val armyDao: ArmyDao
 ) : ViewModel() {
-    private val _minis = MutableStateFlow<List<Miniature>>(emptyList())
-    val minis = _minis.asStateFlow()
-
     private val _armies = MutableStateFlow<List<Army>>(emptyList())
     val armies = _armies.asStateFlow()
 
     private val _army = MutableStateFlow(Army(name = ""))
     val army = _army.asStateFlow()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val _minis = _army
+        .flatMapLatest { army -> miniDao.getArmy(army.name) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val minis = _minis
+
+
     fun loadArmies() {
         viewModelScope.launch {
-            _armies.value = armyDao.getArmies()
+            armyDao.getArmies().collectLatest {
+                _armies.value = it
+            }
         }
     }
 
@@ -43,15 +48,14 @@ class ArmyViewModel @Inject constructor(
     fun deleteArmy(army: Army) {
         viewModelScope.launch {
             armyDao.deleteArmy(army)
-            _minis.value = emptyList()
-            _armies.value = armyDao.getArmies()
         }
     }
 
     fun loadArmy(armyName: String) {
         viewModelScope.launch {
-            _minis.value = miniDao.getArmy(armyName)
-            _army.value = armyDao.getArmy(armyName)
+            armyDao.getArmy(armyName).collectLatest {
+                _army.value = it
+            }
         }
     }
 
@@ -67,7 +71,7 @@ class ArmyViewModel @Inject constructor(
         }
     }
 
-    fun removeMini(mini: Miniature) {
+    fun deleteMini(mini: Miniature) {
         viewModelScope.launch {
             miniDao.deleteMini(mini)
         }

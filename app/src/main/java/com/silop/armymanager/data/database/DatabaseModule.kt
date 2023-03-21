@@ -1,4 +1,4 @@
-package com.silop.armymanager.database
+package com.silop.armymanager.data.database
 
 import android.content.Context
 import androidx.room.Room
@@ -14,11 +14,11 @@ import javax.inject.Singleton
 class DatabaseModule {
     @Provides
     fun provideArmyDao(armyDatabase: ArmyDatabase): ArmyDao {
-        return armyDatabase.armyDao()
+        return armyDatabase.armyDao
     }
     @Provides
     fun provideMiniDao(armyDatabase: ArmyDatabase): MiniDao {
-        return armyDatabase.miniDao()
+        return armyDatabase.miniDao
     }
     @Provides
     @Singleton
